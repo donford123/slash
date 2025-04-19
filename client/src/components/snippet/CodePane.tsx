@@ -26,7 +26,7 @@ export default function CodePane({ html, css, javascript }: CodePaneProps) {
       case "html":
         return html || "<!-- No HTML code available -->";
       default:
-        return "";
+        return javascript || "// No JavaScript code available";
     }
   };
 
