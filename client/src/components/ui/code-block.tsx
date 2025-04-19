@@ -29,13 +29,13 @@ export function CodeBlock({ code, language = "javascript", className }: CodeBloc
     <pre 
       ref={codeRef}
       className={cn(
-        "p-4 m-0 text-sm text-gray-800 font-mono overflow-auto whitespace-pre",
+        "p-4 m-0 text-sm text-gray-800 font-mono overflow-auto",
         `language-${language}`,
         className
       )}
     >
       <code className={`language-${language}`}>
-        {code.trim()}
+        {code}
       </code>
     </pre>
   );
