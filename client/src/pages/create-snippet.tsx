@@ -153,7 +153,21 @@ export default function CreateSnippet() {
       tags: snippetData.tags || [],
     };
     
-    createSnippetMutation.mutate(formattedData as InsertSnippet);
+    // Use type assertion to ensure all optional properties are handled correctly
+    const snippetToCreate = {
+      title: formattedData.title,
+      description: formattedData.description,
+      categoryId: formattedData.categoryId,
+      compatibility: formattedData.compatibility,
+      html: formattedData.html || null,
+      css: formattedData.css || null,
+      javascript: formattedData.javascript || null,
+      installation: formattedData.installation || null,
+      howItWorks: formattedData.howItWorks || null,
+      tags: formattedData.tags || null
+    };
+    
+    createSnippetMutation.mutate(snippetToCreate as InsertSnippet);
   };
 
   return (
