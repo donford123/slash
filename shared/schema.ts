@@ -1,6 +1,7 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { relations } from "drizzle-orm";
 
 // User schema
 export const users = pgTable("users", {
@@ -42,7 +43,7 @@ export const snippets = pgTable("snippets", {
   javascript: text("javascript"),
   installation: text("installation"),
   howItWorks: text("how_it_works"),
-  categoryId: integer("category_id").notNull(),
+  categoryId: integer("category_id").notNull().references(() => categories.id),
   tags: text("tags").array(),
   compatibility: text("compatibility").notNull(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -64,3 +65,19 @@ export const insertSnippetSchema = createInsertSchema(snippets).pick({
 
 export type InsertSnippet = z.infer<typeof insertSnippetSchema>;
 export type Snippet = typeof snippets.$inferSelect;
+
+// Define relations
+export const usersRelations = relations(users, ({ many }) => ({
+  snippets: many(snippets),
+}));
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  snippets: many(snippets),
+}));
+
+export const snippetsRelations = relations(snippets, ({ one }) => ({
+  category: one(categories, {
+    fields: [snippets.categoryId],
+    references: [categories.id],
+  }),
+}));
