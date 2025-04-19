@@ -20,13 +20,13 @@ export default function CodePane({ html, css, javascript }: CodePaneProps) {
   const getActiveCode = () => {
     switch (activeTab) {
       case "javascript":
-        return javascript || "// No JavaScript code available";
+        return javascript || "";
       case "css":
-        return css || "/* No CSS code available */";
+        return css || "";
       case "html":
-        return html || "<!-- No HTML code available -->";
+        return html || "";
       default:
-        return javascript || "// No JavaScript code available";
+        return "";
     }
   };
 
@@ -107,7 +107,13 @@ export default function CodePane({ html, css, javascript }: CodePaneProps) {
         </Button>
       </div>
       <div className="flex-1 overflow-y-auto code-block bg-accent">
-        <CodeBlock language={activeTab} code={getActiveCode()} />
+        {getActiveCode() ? (
+          <CodeBlock language={activeTab} code={getActiveCode()} />
+        ) : (
+          <div className="p-4 text-muted-foreground">
+            No {activeTab} code available for this snippet
+          </div>
+        )}
       </div>
     </div>
   );
