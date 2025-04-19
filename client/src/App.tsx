@@ -7,12 +7,14 @@ import NotFound from "@/pages/not-found";
 import MainLayout from "@/components/layout/MainLayout";
 import Home from "@/pages/home";
 import SnippetPage from "@/pages/snippet";
+import CreateSnippet from "@/pages/create-snippet";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/snippet/:id" component={SnippetPage} />
+      <Route path="/create-snippet" component={CreateSnippet} />
       <Route component={NotFound} />
     </Switch>
   );

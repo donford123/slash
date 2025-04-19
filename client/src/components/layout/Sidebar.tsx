@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation } from "wouter";
-import { Category } from "@shared/schema";
+import { Category, Snippet } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { PlusCircle } from "lucide-react";
 
 export default function Sidebar() {
   const [location] = useLocation();
@@ -11,17 +12,31 @@ export default function Sidebar() {
     queryKey: ["/api/categories"],
   });
 
-  const { data: recentSnippets = [] } = useQuery({
+  const { data: recentSnippets = [] } = useQuery<Snippet[]>({
     queryKey: ["/api/snippets"],
     select: (data) => data.slice(0, 3)
   });
 
   return (
     <aside className="w-56 border-r border-border p-4 h-[calc(100vh-56px)] overflow-y-auto sticky top-[56px] hidden md:block">
+      {/* Create Snippet Button */}
+      <div className="mb-6">
+        <Button
+          variant="outline"
+          className="w-full justify-start font-medium text-primary"
+          asChild
+        >
+          <Link href="/create-snippet">
+            <PlusCircle className="w-4 h-4 mr-2" />
+            Create Snippet
+          </Link>
+        </Button>
+      </div>
+      
       <div className="mb-6">
         <h2 className="font-medium text-sm text-muted-foreground mb-2">CATEGORIES</h2>
         <div>
-          {categories.map((category) => (
+          {categories.map((category: Category) => (
             <Button
               key={category.id}
               variant="ghost"
@@ -41,7 +56,7 @@ export default function Sidebar() {
       <div>
         <h2 className="font-medium text-sm text-muted-foreground mb-2">RECENTLY VIEWED</h2>
         <div>
-          {recentSnippets.map((snippet) => (
+          {recentSnippets.map((snippet: Snippet) => (
             <Link 
               key={snippet.id} 
               href={`/snippet/${snippet.id}`}
